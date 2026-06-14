@@ -1,0 +1,98 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:loc="clr-namespace:AltsTools.Localization"
+        xmlns:vm="clr-namespace:AltsTools.ViewModels"
+        xmlns:views="clr-namespace:AltsTools.Views"
+        xmlns:mi="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+        x:Class="AltsTools.MainWindow"
+        x:Name="Root"
+        x:DataType="vm:MainViewModel"
+        Width="1140" Height="740"
+        MinWidth="940" MinHeight="620"
+        Title="ALTs Tools"
+        Background="{DynamicResource M3Background}"
+        WindowStartupLocation="CenterScreen">
+
+  <Window.Styles>
+    <!-- Navigation rail items: tonal pill highlight on selection -->
+    <Style Selector="ListBox#NavList ListBoxItem">
+      <Setter Property="Margin" Value="10,4"/>
+      <Setter Property="Padding" Value="0"/>
+      <Setter Property="CornerRadius" Value="18"/>
+      <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+      <Setter Property="Background" Value="Transparent"/>
+    </Style>
+    <Style Selector="ListBox#NavList ListBoxItem /template/ ContentPresenter#PART_ContentPresenter">
+      <Setter Property="CornerRadius" Value="18"/>
+      <Setter Property="Transitions">
+        <Transitions><BrushTransition Property="Background" Duration="0:0:0.2"/></Transitions>
+      </Setter>
+    </Style>
+    <Style Selector="ListBox#NavList ListBoxItem:selected /template/ ContentPresenter#PART_ContentPresenter">
+      <Setter Property="Background" Value="{DynamicResource M3SecondaryContainer}"/>
+    </Style>
+    <Style Selector="ListBox#NavList ListBoxItem:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+      <Setter Property="Background" Value="{DynamicResource M3SurfaceContainerHigh}"/>
+    </Style>
+  </Window.Styles>
+
+  <Grid ColumnDefinitions="96,*">
+
+    <!-- ───────────── Material 3 Navigation Rail ───────────── -->
+    <Border Grid.Column="0" Background="{DynamicResource M3SurfaceContainer}">
+      <DockPanel LastChildFill="True">
+        <Image DockPanel.Dock="Top" Width="40" Height="40" Margin="0,22,0,18"
+               Source="avares://AltsTools/Assets/coolpig.ico"/>
+        <ListBox x:Name="NavList" DockPanel.Dock="Top" Background="Transparent"
+                 BorderThickness="0" SelectedIndex="{Binding SelectedNavIndex, Mode=TwoWay}">
+          <ListBoxItem>
+            <StackPanel HorizontalAlignment="Center" Spacing="3" Margin="0,9">
+              <mi:MaterialIcon Kind="SwapHorizontal" Width="24" Height="24" Foreground="{DynamicResource M3OnSurface}"/>
+              <TextBlock Text="{loc:Tr Nav.Converter}" FontSize="11" HorizontalAlignment="Center"
+                         Foreground="{DynamicResource M3OnSurfaceVariant}"/>
+            </StackPanel>
+          </ListBoxItem>
+          <ListBoxItem>
+            <StackPanel HorizontalAlignment="Center" Spacing="3" Margin="0,9">
+              <mi:MaterialIcon Kind="AccountMultiple" Width="24" Height="24" Foreground="{DynamicResource M3OnSurface}"/>
+              <TextBlock Text="{loc:Tr Nav.AltManager}" FontSize="11" HorizontalAlignment="Center"
+                         Foreground="{DynamicResource M3OnSurfaceVariant}"/>
+            </StackPanel>
+          </ListBoxItem>
+          <ListBoxItem>
+            <StackPanel HorizontalAlignment="Center" Spacing="3" Margin="0,9">
+              <mi:MaterialIcon Kind="Needle" Width="24" Height="24" Foreground="{DynamicResource M3OnSurface}"/>
+              <TextBlock Text="{loc:Tr Nav.Injector}" FontSize="11" HorizontalAlignment="Center"
+                         Foreground="{DynamicResource M3OnSurfaceVariant}"/>
+            </StackPanel>
+          </ListBoxItem>
+          <ListBoxItem>
+            <StackPanel HorizontalAlignment="Center" Spacing="3" Margin="0,9">
+              <mi:MaterialIcon Kind="TshirtCrew" Width="24" Height="24" Foreground="{DynamicResource M3OnSurface}"/>
+              <TextBlock Text="{loc:Tr Nav.SkinChanger}" FontSize="11" HorizontalAlignment="Center"
+                         Foreground="{DynamicResource M3OnSurfaceVariant}"/>
+            </StackPanel>
+          </ListBoxItem>
+          <ListBoxItem>
+            <StackPanel HorizontalAlignment="Center" Spacing="3" Margin="0,9">
+              <mi:MaterialIcon Kind="Cog" Width="24" Height="24" Foreground="{DynamicResource M3OnSurface}"/>
+              <TextBlock Text="{loc:Tr Nav.Settings}" FontSize="11" HorizontalAlignment="Center"
+                         Foreground="{DynamicResource M3OnSurfaceVariant}"/>
+            </StackPanel>
+          </ListBoxItem>
+        </ListBox>
+      </DockPanel>
+    </Border>
+
+    <!-- ───────────── Page host ───────────── -->
+    <Border Grid.Column="1" Background="{DynamicResource M3Background}">
+      <Panel Margin="6">
+        <views:TokenConverterView x:Name="PageConverter"  DataContext="{Binding Converter}"/>
+        <views:AltManagerView     x:Name="PageAltManager" DataContext="{Binding AltManager}"  IsVisible="False"/>
+        <views:TokenInjectorView  x:Name="PageInjector"                                        IsVisible="False"/>
+        <views:SkinChangerView    x:Name="PageSkin"       DataContext="{Binding SkinChanger}"  IsVisible="False"/>
+        <views:SettingsView       x:Name="PageSettings"   DataContext="{Binding Settings}"     IsVisible="False"/>
+      </Panel>
+    </Border>
+  </Grid>
+</Window>

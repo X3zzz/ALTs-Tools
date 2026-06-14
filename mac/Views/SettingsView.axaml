@@ -1,0 +1,76 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:loc="clr-namespace:AltsTools.Localization"
+             xmlns:vm="clr-namespace:AltsTools.ViewModels"
+             xmlns:theming="clr-namespace:AltsTools.Theming"
+             xmlns:helpers="clr-namespace:AltsTools.Helpers"
+             x:Class="AltsTools.Views.SettingsView"
+             Classes="page"
+             x:DataType="vm:SettingsViewModel">
+  <UserControl.Resources>
+    <helpers:InvertBoolConverter x:Key="InvertBool"/>
+  </UserControl.Resources>
+
+  <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+    <StackPanel Margin="40,32,40,40" Spacing="22" MaxWidth="680" HorizontalAlignment="Left">
+      <TextBlock Text="{loc:Tr Nav.Settings}" Classes="headline"/>
+
+      <!-- Language -->
+      <Border Classes="card">
+        <StackPanel Spacing="14">
+          <TextBlock Text="{loc:Tr Settings.Language}" Classes="label"/>
+          <ComboBox ItemsSource="{Binding AvailableLanguages}"
+                    SelectedItem="{Binding SelectedLanguage, Mode=TwoWay}" MinWidth="260" HorizontalAlignment="Left">
+            <ComboBox.ItemTemplate>
+              <DataTemplate x:DataType="vm:LanguageOption">
+                <TextBlock Text="{Binding DisplayName}"/>
+              </DataTemplate>
+            </ComboBox.ItemTemplate>
+          </ComboBox>
+        </StackPanel>
+      </Border>
+
+      <!-- Appearance -->
+      <Border Classes="card">
+        <StackPanel Spacing="18">
+          <TextBlock Text="{loc:Tr Settings.Appearance}" Classes="label"/>
+          <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto">
+            <TextBlock Grid.Column="0" Text="{loc:Tr Settings.DarkMode}" Classes="body" VerticalAlignment="Center"/>
+            <ToggleSwitch Grid.Column="1" IsChecked="{Binding IsDarkMode, Mode=TwoWay}"/>
+          </Grid>
+          <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto">
+            <TextBlock Grid.Column="0" Text="{loc:Tr Settings.Dynamic}" Classes="body" VerticalAlignment="Center"/>
+            <ToggleSwitch Grid.Column="1" IsChecked="{Binding IsDynamic, Mode=TwoWay}"/>
+          </Grid>
+          <StackPanel Spacing="10" IsEnabled="{Binding IsDynamic, Converter={StaticResource InvertBool}}">
+            <TextBlock Text="{loc:Tr Settings.AccentColor}" Classes="caption"/>
+            <ItemsControl ItemsSource="{Binding AvailableAccents}">
+              <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate><WrapPanel/></ItemsPanelTemplate>
+              </ItemsControl.ItemsPanel>
+              <ItemsControl.ItemTemplate>
+                <DataTemplate x:DataType="theming:AccentColor">
+                  <Button Width="40" Height="40" Margin="0,0,10,10" CornerRadius="20"
+                          Background="{Binding Brush}" Click="OnAccentClick" Tag="{Binding}"
+                          ToolTip.Tip="{Binding Name}"/>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+          </StackPanel>
+        </StackPanel>
+      </Border>
+
+      <!-- Updates -->
+      <Border Classes="card">
+        <StackPanel Spacing="14">
+          <TextBlock Text="{loc:Tr Settings.Updates}" Classes="label"/>
+          <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto">
+            <TextBlock Grid.Column="0" Text="{loc:Tr Settings.AutoCheckUpdates}" Classes="body" VerticalAlignment="Center"/>
+            <ToggleSwitch Grid.Column="1" IsChecked="{Binding AutoCheckUpdates, Mode=TwoWay}"/>
+          </Grid>
+          <Button Classes="tonal" Content="{loc:Tr Settings.CheckNow}" Command="{Binding CheckUpdatesCommand}" HorizontalAlignment="Left"/>
+        </StackPanel>
+      </Border>
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

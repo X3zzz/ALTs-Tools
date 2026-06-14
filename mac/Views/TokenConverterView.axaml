@@ -1,0 +1,111 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:loc="clr-namespace:AltsTools.Localization"
+             xmlns:vm="clr-namespace:AltsTools.ViewModels"
+             xmlns:mi="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             x:Class="AltsTools.Views.TokenConverterView"
+             Classes="page"
+             x:DataType="vm:TokenConverterViewModel">
+
+  <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+    <StackPanel Margin="40,32,40,40" Spacing="24" MaxWidth="1040" HorizontalAlignment="Stretch">
+
+      <!-- Header -->
+      <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto">
+        <StackPanel Grid.Column="0" Spacing="4" VerticalAlignment="Center">
+          <TextBlock Text="{loc:Tr Converter.Title}" Classes="headline"/>
+        </StackPanel>
+        <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="12" VerticalAlignment="Center">
+          <ComboBox x:Name="ModeBox" SelectedIndex="{Binding SelectedModeIndex, Mode=TwoWay}" MinWidth="200">
+            <ComboBoxItem Content="{loc:Tr Converter.ModeRefresh}"/>
+            <ComboBoxItem Content="{loc:Tr Converter.ModeCookie}"/>
+          </ComboBox>
+          <ComboBox x:Name="ClientBox" SelectedIndex="{Binding SelectedClientIndex, Mode=TwoWay}" MinWidth="180"
+                    IsVisible="{Binding IsRefreshMode}">
+            <ComboBoxItem Content="Vanilla"/>
+            <ComboBoxItem Content="HMCL"/>
+            <ComboBoxItem Content="PCL"/>
+            <ComboBoxItem Content="Essential"/>
+            <ComboBoxItem Content="ksyz Alt Manager"/>
+            <ComboBoxItem Content="BakaXL"/>
+            <ComboBoxItem Content="LabyMod"/>
+            <ComboBoxItem Content="{loc:Tr Converter.ClientCustom}"/>
+          </ComboBox>
+        </StackPanel>
+      </Grid>
+
+      <!-- Two columns: input / access token -->
+      <Grid ColumnDefinitions="*,20,*">
+        <Border Grid.Column="0" Classes="card">
+          <StackPanel Spacing="12">
+            <TextBlock Text="{Binding InputSectionLabel}" Classes="label"/>
+            <TextBox x:Name="RefreshBox" Text="{Binding RefreshToken, Mode=TwoWay}"
+                     AcceptsReturn="True" TextWrapping="Wrap" Height="156"
+                     FontFamily="Menlo,Consolas,monospace" FontSize="12"
+                     VerticalContentAlignment="Top" Watermark="{Binding InputHint}"/>
+            <StackPanel Orientation="Horizontal" Spacing="8">
+              <Button Classes="icon" Click="OnPaste" ToolTip.Tip="{loc:Tr Converter.PasteTip}">
+                <mi:MaterialIcon Kind="ContentPaste" Width="18"/></Button>
+              <Button Classes="icon" Click="OnClearRefresh" ToolTip.Tip="{loc:Tr Converter.ClearTip}">
+                <mi:MaterialIcon Kind="Close" Width="18"/></Button>
+            </StackPanel>
+          </StackPanel>
+        </Border>
+        <Border Grid.Column="2" Classes="card">
+          <StackPanel Spacing="12">
+            <TextBlock Text="{loc:Tr Converter.AccessSection}" Classes="label"/>
+            <TextBox x:Name="AccessBox" Text="{Binding AccessToken}" IsReadOnly="True"
+                     AcceptsReturn="True" TextWrapping="Wrap" Height="156"
+                     FontFamily="Menlo,Consolas,monospace" FontSize="12"
+                     VerticalContentAlignment="Top" Watermark="{loc:Tr Converter.AccessHint}"/>
+            <Button Classes="tonal" Click="OnCopyAccess" Content="{loc:Tr Converter.CopyTip}"
+                    ToolTip.Tip="{loc:Tr Converter.CopyTip}" HorizontalAlignment="Left">
+              <Button.ContentTemplate>
+                <DataTemplate><StackPanel Orientation="Horizontal" Spacing="6">
+                  <mi:MaterialIcon Kind="ContentCopy" Width="16" VerticalAlignment="Center"/>
+                  <TextBlock Text="{loc:Tr Converter.CopyTip}" VerticalAlignment="Center"/>
+                </StackPanel></DataTemplate>
+              </Button.ContentTemplate>
+            </Button>
+          </StackPanel>
+        </Border>
+      </Grid>
+
+      <!-- Profile info strip -->
+      <Border Classes="card" Padding="22,16">
+        <Grid ColumnDefinitions="Auto,*,24,Auto,*" VerticalAlignment="Center">
+          <TextBlock Grid.Column="0" Text="{loc:Tr Converter.Player}" Classes="caption" VerticalAlignment="Center"/>
+          <SelectableTextBlock Grid.Column="1" Text="{Binding ProfileName}" Margin="10,0,0,0" VerticalAlignment="Center"
+                               FontWeight="Medium" Foreground="{DynamicResource M3OnSurface}"/>
+          <TextBlock Grid.Column="3" Text="{loc:Tr Converter.Uuid}" Classes="caption" VerticalAlignment="Center"/>
+          <SelectableTextBlock Grid.Column="4" Text="{Binding PlayerUuid}" Margin="10,0,0,0" VerticalAlignment="Center"
+                               Classes="mono" Foreground="{DynamicResource M3OnSurface}"/>
+        </Grid>
+      </Border>
+
+      <!-- Action bar -->
+      <StackPanel Orientation="Horizontal" Spacing="20" VerticalAlignment="Center">
+        <Button Classes="filled" Click="OnConvert" Content="{Binding ConvertButtonText}" MinWidth="120"/>
+        <CheckBox IsChecked="{Binding AutoCopyToken, Mode=TwoWay}" Content="{loc:Tr Converter.AutoCopy}" VerticalAlignment="Center"/>
+        <ProgressBar IsIndeterminate="True" Width="130" IsVisible="{Binding IsBusy}" VerticalAlignment="Center"/>
+        <TextBlock x:Name="StatusLabel" Text="{Binding StatusMessage}" Classes="caption"
+                   VerticalAlignment="Center" TextWrapping="Wrap"/>
+      </StackPanel>
+
+      <!-- Token expiry checker -->
+      <Border Classes="card">
+        <StackPanel Spacing="12">
+          <TextBlock Text="{loc:Tr Converter.Expiry.Section}" Classes="label"/>
+          <TextBox Text="{Binding ExpiryInput, Mode=TwoWay}" AcceptsReturn="True" TextWrapping="Wrap" Height="76"
+                   FontFamily="Menlo,Consolas,monospace" FontSize="12" VerticalContentAlignment="Top"
+                   Watermark="{loc:Tr Converter.Expiry.InputHint}"/>
+          <StackPanel Orientation="Horizontal" Spacing="16">
+            <Button Classes="tonal" Click="OnCheckExpiry" Content="{loc:Tr Converter.Expiry.Check}"/>
+            <TextBlock Text="{Binding ExpiryResult}" VerticalAlignment="Center" Classes="body"/>
+          </StackPanel>
+        </StackPanel>
+      </Border>
+
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

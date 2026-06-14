@@ -1,0 +1,198 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             xmlns:themes="clr-namespace:Material.Styles.Themes;assembly=Material.Styles"
+             x:Class="AltsTools.App"
+             RequestedThemeVariant="Light">
+
+  <Application.Styles>
+    <themes:MaterialTheme BaseTheme="Light" PrimaryColor="DeepPurple" SecondaryColor="DeepPurple"/>
+    <materialIcons:MaterialIconStyles />
+
+    <!-- ───────────────── Material You 3 component styles ───────────────── -->
+
+    <!-- Filled button: primary action, pill shape -->
+    <Style Selector="Button.filled">
+      <Setter Property="Background" Value="{DynamicResource M3Primary}"/>
+      <Setter Property="Foreground" Value="{DynamicResource M3OnPrimary}"/>
+      <Setter Property="CornerRadius" Value="20"/>
+      <Setter Property="Padding" Value="24,11"/>
+      <Setter Property="FontWeight" Value="Medium"/>
+      <Setter Property="FontSize" Value="14"/>
+      <Setter Property="Transitions">
+        <Transitions>
+          <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.18" Easing="CubicEaseOut"/>
+          <BrushTransition Property="Background" Duration="0:0:0.15"/>
+        </Transitions>
+      </Setter>
+    </Style>
+    <Style Selector="Button.filled:pointerover">
+      <Setter Property="RenderTransform" Value="scale(1.03)"/>
+    </Style>
+    <Style Selector="Button.filled:pressed">
+      <Setter Property="RenderTransform" Value="scale(0.97)"/>
+    </Style>
+
+    <!-- Tonal button: secondary action -->
+    <Style Selector="Button.tonal">
+      <Setter Property="Background" Value="{DynamicResource M3SecondaryContainer}"/>
+      <Setter Property="Foreground" Value="{DynamicResource M3OnSecondaryContainer}"/>
+      <Setter Property="CornerRadius" Value="20"/>
+      <Setter Property="Padding" Value="22,10"/>
+      <Setter Property="FontWeight" Value="Medium"/>
+      <Setter Property="Transitions">
+        <Transitions><TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.18" Easing="CubicEaseOut"/></Transitions>
+      </Setter>
+    </Style>
+    <Style Selector="Button.tonal:pointerover"><Setter Property="RenderTransform" Value="scale(1.03)"/></Style>
+    <Style Selector="Button.tonal:pressed"><Setter Property="RenderTransform" Value="scale(0.97)"/></Style>
+
+    <!-- Outlined button -->
+    <Style Selector="Button.outlined">
+      <Setter Property="Background" Value="Transparent"/>
+      <Setter Property="Foreground" Value="{DynamicResource M3Primary}"/>
+      <Setter Property="BorderBrush" Value="{DynamicResource M3Outline}"/>
+      <Setter Property="BorderThickness" Value="1"/>
+      <Setter Property="CornerRadius" Value="20"/>
+      <Setter Property="Padding" Value="22,10"/>
+    </Style>
+
+    <!-- Icon button (round) -->
+    <Style Selector="Button.icon">
+      <Setter Property="Background" Value="Transparent"/>
+      <Setter Property="CornerRadius" Value="20"/>
+      <Setter Property="Padding" Value="8"/>
+      <Setter Property="Width" Value="40"/>
+      <Setter Property="Height" Value="40"/>
+    </Style>
+    <Style Selector="Button.icon:pointerover">
+      <Setter Property="Background" Value="{DynamicResource M3SurfaceContainerHigh}"/>
+    </Style>
+
+    <!-- ── Material 3 type scale ── -->
+    <!-- Page title (headline-small) -->
+    <Style Selector="TextBlock.headline">
+      <Setter Property="FontSize" Value="28"/>
+      <Setter Property="FontWeight" Value="SemiBold"/>
+      <Setter Property="LineHeight" Value="36"/>
+      <Setter Property="Foreground" Value="{DynamicResource M3OnSurface}"/>
+    </Style>
+    <!-- Card / section header (title-medium) -->
+    <Style Selector="TextBlock.label">
+      <Setter Property="FontSize" Value="15"/>
+      <Setter Property="FontWeight" Value="SemiBold"/>
+      <Setter Property="LineHeight" Value="20"/>
+      <Setter Property="Foreground" Value="{DynamicResource M3OnSurface}"/>
+    </Style>
+    <!-- Body text -->
+    <Style Selector="TextBlock.body">
+      <Setter Property="FontSize" Value="14"/>
+      <Setter Property="LineHeight" Value="20"/>
+      <Setter Property="Foreground" Value="{DynamicResource M3OnSurface}"/>
+    </Style>
+    <!-- Secondary / hint text (body-small) -->
+    <Style Selector="TextBlock.caption">
+      <Setter Property="FontSize" Value="12.5"/>
+      <Setter Property="LineHeight" Value="17"/>
+      <Setter Property="Foreground" Value="{DynamicResource M3OnSurfaceVariant}"/>
+    </Style>
+    <!-- Monospace token/uuid -->
+    <Style Selector="TextBlock.mono, SelectableTextBlock.mono">
+      <Setter Property="FontFamily" Value="Menlo,Consolas,monospace"/>
+      <Setter Property="FontSize" Value="12"/>
+      <Setter Property="Foreground" Value="{DynamicResource M3OnSurfaceVariant}"/>
+    </Style>
+
+    <!-- Consistent input look -->
+    <Style Selector="TextBox">
+      <Setter Property="CornerRadius" Value="14"/>
+    </Style>
+    <Style Selector="ComboBox">
+      <Setter Property="CornerRadius" Value="14"/>
+    </Style>
+
+    <!-- Card surface -->
+    <Style Selector="Border.card">
+      <Setter Property="Background" Value="{DynamicResource M3SurfaceContainer}"/>
+      <Setter Property="CornerRadius" Value="22"/>
+      <Setter Property="Padding" Value="22"/>
+      <Setter Property="BoxShadow" Value="0 1 6 0 #10000000"/>
+    </Style>
+
+    <!-- ───────────── Material emphasized motion ───────────── -->
+
+    <!-- Page entrance: fade + slide up. Applied to a view's root when it
+         becomes visible (the page host toggles IsVisible). -->
+    <Style Selector="UserControl.page">
+      <Setter Property="Opacity" Value="1"/>
+      <Setter Property="RenderTransform" Value="translateY(0px)"/>
+      <Setter Property="Transitions">
+        <Transitions>
+          <DoubleTransition Property="Opacity" Duration="0:0:0.32" Easing="CubicEaseOut"/>
+          <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.4" Easing="CubicEaseOut"/>
+        </Transitions>
+      </Setter>
+    </Style>
+    <!-- starting (hidden) state just before it shows -->
+    <Style Selector="UserControl.page.entering">
+      <Setter Property="Opacity" Value="0"/>
+      <Setter Property="RenderTransform" Value="translateY(18px)"/>
+    </Style>
+
+    <!-- Interactive card hover lift (used by tappable item cards) -->
+    <Style Selector="Border.lift">
+      <Setter Property="RenderTransform" Value="scale(1)"/>
+      <Setter Property="Transitions">
+        <Transitions>
+          <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.22" Easing="CubicEaseOut"/>
+          <BoxShadowsTransition Property="BoxShadow" Duration="0:0:0.22"/>
+        </Transitions>
+      </Setter>
+    </Style>
+    <Style Selector="Border.lift:pointerover">
+      <Setter Property="RenderTransform" Value="scale(1.025)"/>
+      <Setter Property="BoxShadow" Value="0 8 24 0 #28000000"/>
+    </Style>
+  </Application.Styles>
+
+  <Application.Resources>
+    <ResourceDictionary>
+      <!-- Material You 3 tonal palette (purple) — Light scheme defaults.
+           ThemeManager swaps these for the Dark scheme at runtime. -->
+      <ResourceDictionary.ThemeDictionaries>
+        <ResourceDictionary x:Key="Light">
+          <Color x:Key="M3PrimaryColor">#6750A4</Color>
+          <SolidColorBrush x:Key="M3Primary" Color="#6750A4"/>
+          <SolidColorBrush x:Key="M3OnPrimary" Color="#FFFFFF"/>
+          <SolidColorBrush x:Key="M3PrimaryContainer" Color="#EADDFF"/>
+          <SolidColorBrush x:Key="M3OnPrimaryContainer" Color="#21005D"/>
+          <SolidColorBrush x:Key="M3SecondaryContainer" Color="#E8DEF8"/>
+          <SolidColorBrush x:Key="M3OnSecondaryContainer" Color="#1D192B"/>
+          <SolidColorBrush x:Key="M3Background" Color="#FEF7FF"/>
+          <SolidColorBrush x:Key="M3Surface" Color="#FEF7FF"/>
+          <SolidColorBrush x:Key="M3SurfaceContainer" Color="#F3EDF7"/>
+          <SolidColorBrush x:Key="M3SurfaceContainerHigh" Color="#ECE6F0"/>
+          <SolidColorBrush x:Key="M3OnSurface" Color="#1D1B20"/>
+          <SolidColorBrush x:Key="M3OnSurfaceVariant" Color="#49454F"/>
+          <SolidColorBrush x:Key="M3Outline" Color="#79747E"/>
+        </ResourceDictionary>
+        <ResourceDictionary x:Key="Dark">
+          <Color x:Key="M3PrimaryColor">#D0BCFF</Color>
+          <SolidColorBrush x:Key="M3Primary" Color="#D0BCFF"/>
+          <SolidColorBrush x:Key="M3OnPrimary" Color="#381E72"/>
+          <SolidColorBrush x:Key="M3PrimaryContainer" Color="#4F378B"/>
+          <SolidColorBrush x:Key="M3OnPrimaryContainer" Color="#EADDFF"/>
+          <SolidColorBrush x:Key="M3SecondaryContainer" Color="#4A4458"/>
+          <SolidColorBrush x:Key="M3OnSecondaryContainer" Color="#E8DEF8"/>
+          <SolidColorBrush x:Key="M3Background" Color="#141218"/>
+          <SolidColorBrush x:Key="M3Surface" Color="#141218"/>
+          <SolidColorBrush x:Key="M3SurfaceContainer" Color="#211F26"/>
+          <SolidColorBrush x:Key="M3SurfaceContainerHigh" Color="#2B2930"/>
+          <SolidColorBrush x:Key="M3OnSurface" Color="#E6E0E9"/>
+          <SolidColorBrush x:Key="M3OnSurfaceVariant" Color="#CAC4D0"/>
+          <SolidColorBrush x:Key="M3Outline" Color="#938F99"/>
+        </ResourceDictionary>
+      </ResourceDictionary.ThemeDictionaries>
+    </ResourceDictionary>
+  </Application.Resources>
+</Application>

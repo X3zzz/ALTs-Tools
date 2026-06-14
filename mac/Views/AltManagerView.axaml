@@ -1,0 +1,83 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:loc="clr-namespace:AltsTools.Localization"
+             xmlns:vm="clr-namespace:AltsTools.ViewModels"
+             xmlns:models="clr-namespace:AltsTools.Models"
+             xmlns:mi="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             x:Class="AltsTools.Views.AltManagerView"
+             Classes="page"
+             x:DataType="vm:AltManagerViewModel">
+
+  <Grid RowDefinitions="Auto,*" Margin="40,32,40,24">
+    <!-- Header -->
+    <Grid Grid.Row="0" ColumnDefinitions="*,Auto" Margin="0,0,0,22">
+      <StackPanel Grid.Column="0" Spacing="4" VerticalAlignment="Center">
+        <TextBlock Text="{loc:Tr Nav.AltManager}" Classes="headline"/>
+        <TextBlock Text="{Binding AccountCountText}" Classes="caption"/>
+      </StackPanel>
+      <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="12" VerticalAlignment="Center">
+        <TextBox Text="{Binding SearchText, Mode=TwoWay}" Watermark="{loc:Tr AltMgr.SearchHint}"
+                 Width="260" CornerRadius="20">
+          <TextBox.InnerLeftContent>
+            <mi:MaterialIcon Kind="Magnify" Width="18" Margin="10,0,0,0"
+                             Foreground="{DynamicResource M3OnSurfaceVariant}"/>
+          </TextBox.InnerLeftContent>
+        </TextBox>
+        <ComboBox SelectedIndex="{Binding SortIndex, Mode=TwoWay}" MinWidth="160">
+          <ComboBoxItem Content="{loc:Tr AltMgr.SortDateNewest}"/>
+          <ComboBoxItem Content="{loc:Tr AltMgr.SortDateOldest}"/>
+          <ComboBoxItem Content="{loc:Tr AltMgr.SortNameAZ}"/>
+          <ComboBoxItem Content="{loc:Tr AltMgr.SortNameZA}"/>
+        </ComboBox>
+      </StackPanel>
+    </Grid>
+
+    <!-- Empty state -->
+    <StackPanel Grid.Row="1" IsVisible="{Binding IsEmpty}" VerticalAlignment="Center"
+                HorizontalAlignment="Center" Spacing="12">
+      <mi:MaterialIcon Kind="AccountOff" Width="72" Height="72" Foreground="{DynamicResource M3OnSurfaceVariant}"/>
+      <TextBlock Text="{loc:Tr AltMgr.NoAccounts}" FontWeight="SemiBold" HorizontalAlignment="Center"
+                 Foreground="{DynamicResource M3OnSurface}"/>
+      <TextBlock Text="{loc:Tr AltMgr.NoAccountsHint}" Classes="caption" HorizontalAlignment="Center"/>
+    </StackPanel>
+
+    <!-- Card wall -->
+    <ScrollViewer Grid.Row="1" IsVisible="{Binding !IsEmpty}">
+      <ItemsControl ItemsSource="{Binding DisplayItems}">
+        <ItemsControl.ItemsPanel>
+          <ItemsPanelTemplate><WrapPanel/></ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+        <ItemsControl.ItemTemplate>
+          <DataTemplate x:DataType="models:ProfileCardItem">
+            <Border Classes="lift" Width="224" Margin="0,0,16,16" Padding="18" CornerRadius="24"
+                    Background="{DynamicResource M3SurfaceContainer}" BoxShadow="0 2 10 0 #14000000"
+                    PointerPressed="OnCardClick" Tag="{Binding}">
+              <StackPanel Spacing="12">
+                <Grid ColumnDefinitions="48,*">
+                  <Border Grid.Column="0" Width="46" Height="46" CornerRadius="23"
+                          Background="{DynamicResource M3PrimaryContainer}" ClipToBounds="True">
+                    <Panel>
+                      <TextBlock Text="{Binding Initial}" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                 FontWeight="Bold" FontSize="18" Foreground="{DynamicResource M3OnPrimaryContainer}"
+                                 IsVisible="{Binding !HasHeadImage}"/>
+                      <Image Source="{Binding HeadImage}" IsVisible="{Binding HasHeadImage}" Stretch="UniformToFill"/>
+                    </Panel>
+                  </Border>
+                  <StackPanel Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Center" Spacing="2">
+                    <TextBlock Text="{Binding IGN}" FontWeight="SemiBold" FontSize="15"
+                               Foreground="{DynamicResource M3OnSurface}" TextTrimming="CharacterEllipsis"/>
+                    <TextBlock Text="{Binding LoginDate}" Classes="caption" FontSize="11"/>
+                  </StackPanel>
+                </Grid>
+                <TextBlock Text="{Binding UUIDShort}" Classes="caption" FontSize="11"
+                           FontFamily="Menlo,Consolas,monospace"/>
+                <Button Classes="filled" Content="{loc:Tr AltMgr.Login}" Click="OnActivate" Tag="{Binding}"
+                        HorizontalAlignment="Stretch" Padding="0,9"/>
+              </StackPanel>
+            </Border>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+    </ScrollViewer>
+  </Grid>
+</UserControl>

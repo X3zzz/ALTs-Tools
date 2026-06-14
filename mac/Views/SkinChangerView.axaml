@@ -1,0 +1,127 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:loc="clr-namespace:AltsTools.Localization"
+             xmlns:vm="clr-namespace:AltsTools.ViewModels"
+             xmlns:models="clr-namespace:AltsTools.Models"
+             xmlns:helpers="clr-namespace:AltsTools.Helpers"
+             xmlns:controls="clr-namespace:AltsTools.Controls"
+             x:Class="AltsTools.Views.SkinChangerView"
+             Classes="page"
+             x:DataType="vm:SkinChangerViewModel">
+  <UserControl.Resources>
+    <helpers:BytesToBitmapConverter x:Key="BytesToBitmap"/>
+    <loc:EnumLocalizeConverter x:Key="EnumLoc"/>
+  </UserControl.Resources>
+
+  <Grid ColumnDefinitions="430,20,*" Margin="40,32,40,32">
+
+    <!-- Left: controls -->
+    <ScrollViewer Grid.Column="0" HorizontalScrollBarVisibility="Disabled">
+      <StackPanel Spacing="20" Margin="0,0,8,0">
+        <TextBlock Text="{loc:Tr Nav.SkinChanger}" Classes="headline"/>
+        <TextBlock Text="{Binding StatusMessage}" Classes="caption" TextWrapping="Wrap"/>
+
+        <Border Classes="card">
+          <StackPanel Spacing="10">
+            <TextBlock Text="{loc:Tr Skin.CurrentAccount}" Classes="label"/>
+            <TextBlock Text="{Binding ProfileName}" Foreground="{DynamicResource M3OnSurface}" FontWeight="SemiBold"/>
+            <TextBlock Text="{Binding ProfileId}" Classes="caption" FontFamily="Menlo,Consolas,monospace"/>
+            <Button Classes="tonal" Content="{loc:Tr Skin.Refresh}" Command="{Binding RefreshProfileCommand}" HorizontalAlignment="Left"/>
+          </StackPanel>
+        </Border>
+
+        <Border Classes="card">
+          <StackPanel Spacing="10">
+            <TextBlock Text="{loc:Tr Skin.Rename}" Classes="label"/>
+            <TextBox Text="{Binding NewName, Mode=TwoWay}" Watermark="{loc:Tr Skin.NewNameHint}" MaxLength="16" CornerRadius="14"/>
+            <Button Classes="filled" Content="{loc:Tr Skin.RenameButton}" Command="{Binding RenameCommand}" HorizontalAlignment="Left"/>
+          </StackPanel>
+        </Border>
+
+        <Border Classes="card">
+          <StackPanel Spacing="10">
+            <TextBlock Text="{loc:Tr Skin.ApplySkin}" Classes="label"/>
+            <StackPanel Orientation="Horizontal" Spacing="8">
+              <TextBox Text="{Binding LocalSkinPath, Mode=TwoWay}" Watermark="{loc:Tr Skin.PathHint}" Width="230" CornerRadius="14"/>
+              <Button Classes="tonal" Content="{loc:Tr Skin.Browse}" Command="{Binding BrowseSkinCommand}"/>
+            </StackPanel>
+            <ComboBox SelectedItem="{Binding SelectedVariant, Mode=TwoWay}" Width="170" CornerRadius="14">
+              <models:MinecraftSkinVariant>Classic</models:MinecraftSkinVariant>
+              <models:MinecraftSkinVariant>Slim</models:MinecraftSkinVariant>
+            </ComboBox>
+            <Button Classes="filled" Content="{loc:Tr Skin.FromFile}" Command="{Binding ApplyFileSkinCommand}" HorizontalAlignment="Left"/>
+            <TextBox Text="{Binding RemoteSkinUrl, Mode=TwoWay}" Watermark="https://…" CornerRadius="14"/>
+            <Button Classes="tonal" Content="{loc:Tr Skin.FromUrl}" Command="{Binding ApplyUrlSkinCommand}" HorizontalAlignment="Left"/>
+          </StackPanel>
+        </Border>
+
+        <Border Classes="card">
+          <StackPanel Spacing="10">
+            <TextBlock Text="{loc:Tr Skin.FindPlayer}" Classes="label"/>
+            <TextBox Text="{Binding OtherPlayerName, Mode=TwoWay}" Watermark="{loc:Tr Skin.PlayerNameHint}" CornerRadius="14"/>
+            <StackPanel Orientation="Horizontal" Spacing="8">
+              <Button Classes="tonal" Content="{loc:Tr Skin.FetchSkin}" Command="{Binding PreviewOtherPlayerSkinCommand}"/>
+              <Button Classes="outlined" Content="{loc:Tr Skin.SavePng}" Command="{Binding DownloadOtherPlayerSkinCommand}"/>
+            </StackPanel>
+          </StackPanel>
+        </Border>
+
+        <!-- Scene controls: variant / animation / background / panorama -->
+        <Border Classes="card">
+          <StackPanel Spacing="10">
+            <TextBlock Text="{loc:Tr Skin.Scene}" Classes="label"/>
+            <Grid ColumnDefinitions="*,10,*" RowDefinitions="Auto,Auto">
+              <ComboBox Grid.Row="0" Grid.Column="0" CornerRadius="14" HorizontalAlignment="Stretch"
+                        SelectedItem="{Binding SelectedAnimationMode, Mode=TwoWay}" ToolTip.Tip="{loc:Tr Skin.AnimationHint}">
+                <models:PreviewAnimationMode>Auto</models:PreviewAnimationMode>
+                <models:PreviewAnimationMode>Idle</models:PreviewAnimationMode>
+                <models:PreviewAnimationMode>Walk</models:PreviewAnimationMode>
+                <models:PreviewAnimationMode>Fap</models:PreviewAnimationMode>
+              </ComboBox>
+              <ComboBox Grid.Row="0" Grid.Column="2" CornerRadius="14" HorizontalAlignment="Stretch"
+                        SelectedItem="{Binding SelectedBackgroundMode, Mode=TwoWay}" ToolTip.Tip="{loc:Tr Skin.BackgroundHint}">
+                <models:PreviewBackgroundMode>Bright</models:PreviewBackgroundMode>
+                <models:PreviewBackgroundMode>Moody</models:PreviewBackgroundMode>
+                <models:PreviewBackgroundMode>Dark</models:PreviewBackgroundMode>
+                <models:PreviewBackgroundMode>Panorama</models:PreviewBackgroundMode>
+              </ComboBox>
+            </Grid>
+            <ComboBox CornerRadius="14" HorizontalAlignment="Stretch"
+                      ItemsSource="{Binding AvailablePanoramaPresets}"
+                      SelectedItem="{Binding SelectedPanoramaPreset, Mode=TwoWay}"
+                      ToolTip.Tip="{loc:Tr Skin.PanoramaHint}">
+              <ComboBox.ItemTemplate>
+                <DataTemplate x:DataType="vm:SkinChangerViewModel+PanoramaPresetOption">
+                  <TextBlock Text="{Binding DisplayName}"/>
+                </DataTemplate>
+              </ComboBox.ItemTemplate>
+            </ComboBox>
+            <StackPanel Orientation="Horizontal" Spacing="8">
+              <Button Classes="outlined" Content="{loc:Tr Skin.ResetCamera}" Command="{Binding ResetCameraCommand}"/>
+              <Button Classes="outlined" Content="{loc:Tr Skin.ClearPanorama}" Command="{Binding ClearPanoramaCommand}"/>
+            </StackPanel>
+          </StackPanel>
+        </Border>
+      </StackPanel>
+    </ScrollViewer>
+
+    <!-- Right: real-time 3D skin preview (software-rasterized, orbit + zoom) -->
+    <Border Grid.Column="2" Background="{DynamicResource M3SurfaceContainerHigh}" CornerRadius="28" ClipToBounds="True">
+      <Panel>
+        <controls:SkinPreview3D
+            SkinBytes="{Binding PreviewSkinPng}"
+            SkinVariant="{Binding SelectedVariant}"
+            CameraResetNonce="{Binding CameraResetNonce}"
+            BackgroundMode="{Binding SelectedBackgroundMode}"
+            PanoramaKey="{Binding PanoramaSourcePath}"
+            AnimationMode="{Binding SelectedAnimationMode}"
+            ToolTip.Tip="{loc:Tr Skin.OrbitHint}"/>
+        <Border Background="{DynamicResource M3SecondaryContainer}" CornerRadius="14" Padding="14,7"
+                HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,18">
+          <TextBlock Text="{loc:Tr Skin.OrbitHint}" FontSize="11" FontWeight="Medium"
+                     Foreground="{DynamicResource M3OnSecondaryContainer}"/>
+        </Border>
+      </Panel>
+    </Border>
+  </Grid>
+</UserControl>

@@ -1,0 +1,62 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    macOS port of ALTs-Tools (originally Windows WPF/.NET 8).
+    Avalonia UI keeps the same XAML+C# MVVM model so most ViewModels/Services/
+    Models from RefreshToAccess2/ port over with minimal changes.
+    Build/run:  dotnet run  (requires the .NET 8 SDK)
+  -->
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>           <!-- on macOS this still produces a GUI app head -->
+    <TargetFramework>net10.0</TargetFramework>   <!-- machine has .NET 10 SDK/runtime only -->
+    <EnableWindowsTargeting>false</EnableWindowsTargeting>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AssemblyName>AltsTools</AssemblyName>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+    <Version>1.0.2</Version>
+    <!-- Avalonia recommends disabling this for desktop trimming friendliness -->
+    <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Avalonia core + desktop + theming. Material.Avalonia gives the
+         MaterialDesign-style look the WPF app used (MaterialDesignThemes). -->
+    <PackageReference Include="Avalonia" Version="11.2.3" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.2.3" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.2.3" />
+    <PackageReference Include="Avalonia.Fonts.Inter" Version="11.2.3" />
+    <PackageReference Include="Material.Avalonia" Version="3.9.2" />
+    <PackageReference Include="Material.Icons.Avalonia" Version="2.1.10" />
+
+    <!-- Portable logic-layer deps reused from the Windows project -->
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.2.0" />
+    <PackageReference Include="EasyCompressor.LZMA" Version="2.1.0" />
+
+    <!-- Cross-platform image decode/encode to replace WPF System.Windows.Media.Imaging -->
+    <PackageReference Include="SkiaSharp" Version="2.88.9" />
+  </ItemGroup>
+
+  <!-- Panoramas reused from the Windows project (read at runtime). -->
+  <ItemGroup>
+    <AvaloniaResource Include="Assets/**" />
+  </ItemGroup>
+
+  <!-- Ship the validated native injector + payload (Phase 1) alongside the app
+       so the Injector page can shell out to them. They live in mac-inject-poc/
+       and must be built there first (`make` in that dir). -->
+  <ItemGroup>
+    <None Include="../mac-inject-poc/injector" Condition="Exists('../mac-inject-poc/injector')">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>injector</Link>
+    </None>
+    <None Include="../mac-inject-poc/payload.dylib" Condition="Exists('../mac-inject-poc/payload.dylib')">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>payload.dylib</Link>
+    </None>
+  </ItemGroup>
+
+</Project>

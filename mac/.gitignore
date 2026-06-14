@@ -1,0 +1,12 @@
+# .NET build artifacts
+obj/
+bin/
+publish/
+
+# Packaged app (regenerable via package.sh)
+dist/
+
+# IDE
+.vs/
+.idea/
+*.user

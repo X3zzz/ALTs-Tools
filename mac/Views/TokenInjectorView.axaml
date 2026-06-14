@@ -1,0 +1,56 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:loc="clr-namespace:AltsTools.Localization"
+             xmlns:mi="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             x:Class="AltsTools.Views.TokenInjectorView"
+             Classes="page">
+
+  <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+    <StackPanel Margin="40,32,40,40" Spacing="22" MaxWidth="860" HorizontalAlignment="Left">
+      <StackPanel Spacing="6">
+        <TextBlock Text="{loc:Tr Inject.Title}" Classes="headline"/>
+        <TextBlock Text="{loc:Tr ProcSel.Hint}" Classes="caption" TextWrapping="Wrap" MaxWidth="780"/>
+      </StackPanel>
+
+      <!-- Step 1 -->
+      <Border Classes="card">
+        <StackPanel Spacing="14">
+          <Grid ColumnDefinitions="Auto,*,Auto">
+            <Border Grid.Column="0" Width="24" Height="24" CornerRadius="12" Margin="0,0,10,0"
+                    Background="{DynamicResource M3Primary}" VerticalAlignment="Center">
+              <TextBlock Text="1" Foreground="{DynamicResource M3OnPrimary}" FontWeight="Bold"
+                         HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
+            <TextBlock Grid.Column="1" Text="{loc:Tr ProcSel.Title}" Classes="label" VerticalAlignment="Center"/>
+            <Button Grid.Column="2" Classes="icon" Click="OnRefresh" ToolTip.Tip="Refresh">
+              <mi:MaterialIcon Kind="Refresh" Width="20"/>
+            </Button>
+          </Grid>
+          <ListBox x:Name="ProcList" Height="170" CornerRadius="14"
+                   Background="{DynamicResource M3SurfaceContainerHigh}" Padding="6"/>
+          <Button Classes="filled" Click="OnInject" Content="{loc:Tr Inject.Title}" HorizontalAlignment="Left"/>
+        </StackPanel>
+      </Border>
+
+      <!-- Step 2 -->
+      <Border Classes="card">
+        <StackPanel Spacing="14">
+          <Grid ColumnDefinitions="Auto,*">
+            <Border Grid.Column="0" Width="24" Height="24" CornerRadius="12" Margin="0,0,10,0"
+                    Background="{DynamicResource M3Primary}" VerticalAlignment="Center">
+              <TextBlock Text="2" Foreground="{DynamicResource M3OnPrimary}" FontWeight="Bold"
+                         HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
+            <TextBlock Grid.Column="1" Text="{loc:Tr InjTok.Title}" Classes="label" VerticalAlignment="Center"/>
+          </Grid>
+          <TextBox x:Name="TokenBox" Watermark="{loc:Tr InjTok.PasteHere}"
+                   AcceptsReturn="True" TextWrapping="Wrap" Height="96"
+                   FontFamily="Menlo,Consolas,monospace" FontSize="12" VerticalContentAlignment="Top"/>
+          <Button Classes="filled" Click="OnSwap" Content="{loc:Tr InjTok.InjectToken}" HorizontalAlignment="Left"/>
+        </StackPanel>
+      </Border>
+
+      <TextBlock x:Name="Status" Classes="caption" TextWrapping="Wrap"/>
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

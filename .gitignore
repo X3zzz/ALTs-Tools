@@ -1,0 +1,21 @@
+# ---- .NET / Avalonia 构建产物 ----
+bin/
+obj/
+dist/
+*.user
+*.suo
+
+# ---- 原生注入器构建产物（由 mac-inject-poc/Makefile 生成）----
+mac-inject-poc/injector
+mac-inject-poc/payload.dylib
+mac-inject-poc/minpayload.dylib
+mac-inject-poc/target
+mac-inject-poc/FakeMinecraft
+mac-inject-poc/classes/
+*.class
+
+# ---- macOS / 编辑器杂项 ----
+.DS_Store
+.vs/
+.vscode/
+.idea/
